@@ -25,19 +25,16 @@ public class AppController implements Initializable {
     @FXML
     private Button searchButton;
     @FXML
-    private ListView<Team> teamListView;
+    private ListView<String> teamListView;
     private Map<String, String> competitions = new HashMap<>();
-    private final FootballService footballService = new FootballService();
-    private final ObservableList<Team> teamList = FXCollections.observableArrayList();
+    private  ObservableList<String> names;
     private String selectedCompetitionCode;
-    Map<String, String> competiciones = null;
+
+    private FootballTask footballTask;
+
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        Observable<Team> data = footballService.getStandings("CL");
-        System.out.println(data);
-
-        teamListView.setItems(teamList);
 
 //         Crear un mapa de competiciones con clave (código) y valor (nombre)
 
@@ -69,10 +66,12 @@ public class AppController implements Initializable {
     @FXML
     public void findTeams(ActionEvent event) {
 
+        this.names = FXCollections.observableArrayList();
+
         String selectedCompetitionName = competitionComboBox.getValue();
 
         System.out.println("Creando la tarea FootballTask para la competición: " + selectedCompetitionName);
-        // Obtener el código de la competición seleccionada
+
 
         for (Map.Entry<String, String> entry : competitions.entrySet()) {
             if (entry.getValue().equalsIgnoreCase(selectedCompetitionName)) {
@@ -82,15 +81,12 @@ public class AppController implements Initializable {
         }
 
         System.out.println("Creando la tarea FootballTask para la competición: " + selectedCompetitionCode);
+        System.out.println("Equipos: " + this.names);
 
+        this.teamListView.setItems(this.names);
 
-        this.teamListView.setItems(teamList);
-
-        FootballTask footballTask = new FootballTask(selectedCompetitionCode, teamList);
+        footballTask = new FootballTask(selectedCompetitionCode, this.names);
         new Thread(footballTask).start();
-
-    }
-    public void deleteText() {
 
     }
 }

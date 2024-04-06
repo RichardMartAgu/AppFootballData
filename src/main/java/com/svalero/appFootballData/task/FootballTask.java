@@ -2,40 +2,36 @@ package com.svalero.appFootballData.task;
 
 import com.svalero.appFootballData.model.Team;
 import com.svalero.appFootballData.service.FootballService;
-import io.reactivex.Observable;
-import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Consumer;
 import javafx.application.Platform;
 import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
 
-public class FootballTask extends Task<Void> {
+public class FootballTask extends Task<Integer> {
 
     private final String selectedCompetition;
-    private final ObservableList<Team> team;
-    private Disposable disposable;
+    private final ObservableList<String> names;
 
-    public FootballTask(String selectedCompetition, ObservableList<Team> teamList) {
+    public FootballTask(String selectedCompetition, ObservableList<String> names) {
         this.selectedCompetition = selectedCompetition;
-        this.team = teamList;
+        this.names = names;
     }
 
     @Override
-    protected Void call()  {
+    protected Integer call() {
         System.out.println("FootballTask.call() comenzó");
 
         FootballService footballService = new FootballService();
-        System.out.println("FootballTask.call() sigue");
-        Consumer<Team> user = (team) ->{
+        Consumer<Team> user = (team) -> {
             Thread.sleep(250);
-            Platform.runLater(()-> this.team.add(team));
+            Platform.runLater(() -> this.names.add(team.getName()));
         };
-        System.out.println("FootballTask.call() sigue 2");
-
-            System.out.println("FootballTask.call() sigue 3");
 
         System.out.println("FootballTask.call() terminó");
-        footballService.getStandings(selectedCompetition).subscribe(user);
+
+        footballService.getTeams(selectedCompetition)
+                .subscribe(user);
+
         return null;
     }
 
