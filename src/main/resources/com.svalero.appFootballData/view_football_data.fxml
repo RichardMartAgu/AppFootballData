@@ -10,13 +10,15 @@
 <AnchorPane fx:id="mainAnchor" accessibleRole="COMBO_BOX" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1000.0" styleClass="Anchor" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.svalero.appFootballData.controller.AppController">
     <children>
         <ComboBox fx:id="competitionComboBox" layoutX="105.0" layoutY="54.0" prefWidth="150.0" />
-      <Button fx:id="searchCompetitionButton" layoutX="105.0" layoutY="136.0" mnemonicParsing="false" onAction="#findTeams" prefHeight="26.0" prefWidth="119.0" text="Buscar" />
-      <TabPane fx:id="tabFootball" layoutX="28.0" layoutY="284.0" prefHeight="450.0" prefWidth="900.0" tabClosingPolicy="UNAVAILABLE">
+      <Button fx:id="searchCompetitionButton" layoutX="105.0" layoutY="136.0" mnemonicParsing="false" onAction="#findCompetitionTeams" prefHeight="26.0" prefWidth="119.0" text="Buscar" />
+      <TabPane fx:id="tabFootball" layoutX="28.0" layoutY="284.0" prefHeight="450.0" prefWidth="900.0">
          <styleClass>
             <String fx:value="TableView" />
             <String fx:value="column-header" />
          </styleClass>
       </TabPane>
-      <ChoiceBox fx:id="maxTabsChoiceBox" layoutX="28.0" layoutY="237.0" prefHeight="47.0" prefWidth="114.0" styleClass="button" />
+      <ChoiceBox fx:id="maxTabsChoiceBox" layoutX="28.0" layoutY="227.0" prefHeight="33.0" prefWidth="58.0" styleClass="button" />
+      <ComboBox fx:id="teamComboBox" layoutX="458.0" layoutY="54.0" prefWidth="150.0" />
+      <Button fx:id="searchTeamButton" layoutX="458.0" layoutY="136.0" mnemonicParsing="false" onAction="#findTeam" prefHeight="26.0" prefWidth="119.0" text="Buscar" />
     </children>
 </AnchorPane>

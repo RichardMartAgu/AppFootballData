@@ -9,7 +9,7 @@ import java.util.List;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class AllFootballData {
+public class AllFootballDataCompetitions {
     private Filters filters;
     private Area area;
     private Competition competition;

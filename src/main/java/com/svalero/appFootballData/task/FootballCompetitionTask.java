@@ -6,20 +6,25 @@ import io.reactivex.functions.Consumer;
 import javafx.application.Platform;
 import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
+import javafx.scene.control.ProgressIndicator;
 
-public class FootballTask extends Task<Integer> {
+public class FootballCompetitionTask extends Task<Integer> {
 
     private final String selectedCompetition;
     private final ObservableList<String> names;
+    private final ProgressIndicator progressIndicator;
 
-    public FootballTask(String selectedCompetition, ObservableList<String> names) {
+    public FootballCompetitionTask(String selectedCompetition, ObservableList<String> names, ProgressIndicator progressIndicator) {
         this.selectedCompetition = selectedCompetition;
         this.names = names;
+        this.progressIndicator = progressIndicator;
     }
 
     @Override
     protected Integer call() {
-        System.out.println("FootballTask.call() comenzó");
+
+        Platform.runLater(() -> progressIndicator.setVisible(true));
+        Platform.runLater(() -> progressIndicator.setProgress(-1));
 
         FootballService footballService = new FootballService();
         Consumer<Team> user = (team) -> {
@@ -27,10 +32,11 @@ public class FootballTask extends Task<Integer> {
             Platform.runLater(() -> this.names.add(team.getName()));
         };
 
-        System.out.println("FootballTask.call() terminó");
-
         footballService.getTeams(selectedCompetition)
                 .subscribe(user);
+
+        Platform.runLater(() -> progressIndicator.setVisible(false));
+        Platform.runLater(() -> progressIndicator.setProgress(0));
 
         return null;
     }
