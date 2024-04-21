@@ -11,12 +11,12 @@
       <ListView fx:id="teamListView" layoutX="21.0" layoutY="48.0" prefHeight="315.0" prefWidth="706.0" styleClass="TableView" />
       <TableView fx:id="squadTableView" layoutX="21.0" layoutY="49.0" prefHeight="315.0" prefWidth="706.0">
         <columns>
-            <TableColumn fx:id="nameColumn" prefWidth="171.99999618530273" text="Name" />
-            <TableColumn fx:id="positionColumn" prefWidth="184.7999725341797" text="Position" />
-            <TableColumn fx:id="nationalityColumn" prefWidth="170.39996337890625" text="Nacionality" />
-            <TableColumn fx:id="birthColumn" prefWidth="180.00006103515625" text="birthday" />
+            <TableColumn fx:id="nameColumn" prefWidth="171.99999618530273" text="Nombre" />
+            <TableColumn fx:id="positionColumn" prefWidth="184.7999725341797" text="Posición en el campo" />
+            <TableColumn fx:id="nationalityColumn" prefWidth="170.39996337890625" text="Nacionalidad" />
+            <TableColumn fx:id="birthColumn" prefWidth="180.00006103515625" text="Día nacimiento" />
         </columns>
       </TableView>
-      <ProgressIndicator fx:id="progressIndicator" layoutX="21.0" layoutY="375.0" prefHeight="35.0" prefWidth="57.0" progress="0.0" />
+      <ProgressIndicator fx:id="progressIndicator" layoutX="791.0" layoutY="79.0" prefHeight="35.0" prefWidth="57.0" progress="0.0" />
    </children>
 </AnchorPane>

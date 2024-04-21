@@ -41,6 +41,10 @@ public class AppController implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
 
+        searchCompetitionButton.getStyleClass().add("btn");
+        searchCompetitionButton.getStyleClass().add("btn-primary");
+
+
         // inicializamos el maxTabsChoiceBox para elegir un máximo de tabs
         ObservableList<Integer> choices = FXCollections.observableArrayList(1, 2, 3, 4, 5);
         maxTabsChoiceBox.setItems(choices);
@@ -91,7 +95,6 @@ public class AppController implements Initializable {
 
         //seleccionar una competición para mostrar
         teamComboBox.getSelectionModel().selectFirst();
-
     }
 
     // generamos un nuevo hilo
@@ -130,7 +133,7 @@ public class AppController implements Initializable {
             footballTaskController.createCompetitionTask(selectedCompetitionCode);
 
         } else {
-            ShowAlert.showErrorAlert("Information", "DEMASIADAS PESTAÑAS", "máximo de pestañas alcanzado");
+            ShowAlert.showInformationAlert("Information", "DEMASIADAS PESTAÑAS", "máximo de pestañas alcanzado");
         }
     }
 
@@ -153,7 +156,7 @@ public class AppController implements Initializable {
             AnchorPane anchorPane = loader.load(); //cuidado
             tabFootball.getTabs().add(new Tab(selectedTeamName, anchorPane));
 
-            //añadimos el Id asociado al equipo
+            //añadimos Id asociado al equipo
             for (Map.Entry<String, String> entry : teams.entrySet()) {
                 if (entry.getValue().equalsIgnoreCase(selectedTeamName)) {
                     selectedTeamId = entry.getKey();
@@ -169,7 +172,7 @@ public class AppController implements Initializable {
             footballTaskController.createFootballTeamTask(selectedTeamId);
 
         } else {
-            ShowAlert.showErrorAlert("Information", "DEMASIADAS PESTAÑAS", "máximo de pestañas alcanzado");
+            ShowAlert.showInformationAlert("Information", "Máximo de pestañas alcanzado", "por favor cerrar alguna pestaña antes de continuar");
         }
     }
 }
