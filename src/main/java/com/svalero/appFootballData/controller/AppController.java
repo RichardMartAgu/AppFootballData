@@ -1,18 +1,17 @@
 package com.svalero.appFootballData.controller;
 
-import com.svalero.appFootballData.model.Team;
-import com.svalero.appFootballData.service.FootballService;
 import com.svalero.appFootballData.task.FootballTask;
-import io.reactivex.Observable;
+import com.svalero.appFootballData.utils.ShowAlert;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Button;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.ListView;
+import javafx.scene.control.*;
+import javafx.scene.layout.AnchorPane;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
@@ -23,21 +22,27 @@ public class AppController implements Initializable {
     @FXML
     private ComboBox<String> competitionComboBox;
     @FXML
-    private Button searchButton;
+    private Button searchCompetitionButton;
     @FXML
-    private ListView<String> teamListView;
+    private TabPane tabFootball;
+    @FXML
+    private ChoiceBox<Integer> maxTabsChoiceBox;
+
     private Map<String, String> competitions = new HashMap<>();
-    private  ObservableList<String> names;
     private String selectedCompetitionCode;
 
-    private FootballTask footballTask;
+
 
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
 
-//         Crear un mapa de competiciones con clave (código) y valor (nombre)
+        // inicializamos el maxTabsChoiceBox para elegir un máximo de tabs
+        ObservableList<Integer> choices = FXCollections.observableArrayList(1, 2, 3, 4, 5);
+        maxTabsChoiceBox.setItems(choices);
+        maxTabsChoiceBox.setValue(5);
 
+        // creamos un mapa de competiciones con clave (código) y valor (nombre)
         competitions.put("WC", "FIFA World Cup");
         competitions.put("CL", "UEFA Champions League");
         competitions.put("BL1", "Bundesliga");
@@ -52,41 +57,51 @@ public class AppController implements Initializable {
         competitions.put("CLI", "Copa Libertadores");
         competitions.put("PD", "Primera Division");
 
-        // Agregar las competiciones al ComboBox competitionComboBox
+        // agregar las competiciones al ComboBox competitionComboBox
         competitionComboBox.setItems(FXCollections.observableArrayList(competitions.values()));
+
         //seleccionar una competición para mostrar
         competitionComboBox.getSelectionModel().selectFirst();
-        teamListView.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
-            if (newValue == null) {
-                teamListView.getSelectionModel().clearSelection();
-            }
-        });
+
     }
 
+    // generamos un nuevo hilo
     @FXML
-    public void findTeams(ActionEvent event) {
+    public void findTeams(ActionEvent event) throws IOException {
 
-        this.names = FXCollections.observableArrayList();
+        // recogemos el valor del máximo de tabs
+        int maxTabs = maxTabsChoiceBox.getValue();
 
-        String selectedCompetitionName = competitionComboBox.getValue();
+        //miramos si es posible crear una tab más o excede el máximo
+        if (tabFootball.getTabs().size() < maxTabs) {
 
-        System.out.println("Creando la tarea FootballTask para la competición: " + selectedCompetitionName);
+            //creamos la instancia del nuevo fxml
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com.svalero.appFootballData/football_pane.fxml"));
 
+            //cogemos la competición seleccionada
+            String selectedCompetitionName = competitionComboBox.getValue();
 
-        for (Map.Entry<String, String> entry : competitions.entrySet()) {
-            if (entry.getValue().equalsIgnoreCase(selectedCompetitionName)) {
-                selectedCompetitionCode = entry.getKey();
-                break;
+            //creamos la nueva pestaña
+            AnchorPane anchorPane = loader.load(); //cuidado
+            tabFootball.getTabs().add(new Tab(selectedCompetitionName, anchorPane));
+
+            //añadimos el string asociado a la selección de competición
+            for (Map.Entry<String, String> entry : competitions.entrySet()) {
+                if (entry.getValue().equalsIgnoreCase(selectedCompetitionName)) {
+                    selectedCompetitionCode = entry.getKey();
+                    break;
+                }
             }
+            // Obtenemos el controlador del FXML cargado
+            FootballTaskController footballTaskController = loader.getController();
+
+            System.out.println("AppController competition : " + selectedCompetitionCode);
+
+            // Enviamos el código de la competición al controlador
+            footballTaskController.setCompetitionCode(selectedCompetitionCode);
+
+        } else {
+            ShowAlert.showErrorAlert("Information", "DEMASIADAS PESTAÑAS", "máximo de pestañas alcanzado");
         }
-
-        System.out.println("Creando la tarea FootballTask para la competición: " + selectedCompetitionCode);
-        System.out.println("Equipos: " + this.names);
-
-        this.teamListView.setItems(this.names);
-
-        footballTask = new FootballTask(selectedCompetitionCode, this.names);
-        new Thread(footballTask).start();
-
     }
 }
