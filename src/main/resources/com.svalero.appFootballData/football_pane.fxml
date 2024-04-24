@@ -1,15 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ListView?>
 <?import javafx.scene.control.ProgressIndicator?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="450.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.svalero.appFootballData.controller.FootballTaskController">
    <children>
       <ListView fx:id="teamListView" layoutX="21.0" layoutY="48.0" prefHeight="315.0" prefWidth="706.0" styleClass="TableView" />
-      <TableView fx:id="squadTableView" layoutX="21.0" layoutY="49.0" prefHeight="315.0" prefWidth="706.0">
+      <TableView fx:id="squadTableView" layoutX="21.0" layoutY="48.0" prefHeight="315.0" prefWidth="706.0">
         <columns>
             <TableColumn fx:id="nameColumn" prefWidth="171.99999618530273" text="Nombre" />
             <TableColumn fx:id="positionColumn" prefWidth="184.7999725341797" text="Posición en el campo" />
@@ -18,5 +20,8 @@
         </columns>
       </TableView>
       <ProgressIndicator fx:id="progressIndicator" layoutX="791.0" layoutY="79.0" prefHeight="35.0" prefWidth="57.0" progress="0.0" />
+      <TextField fx:id="filterTextField" layoutX="21.0" layoutY="14.0" prefHeight="25.0" prefWidth="187.0" />
+      <Label fx:id="filterTeam" layoutX="228.0" layoutY="18.0" text=": Filtrar por nombre del equipo" />
+      <Label fx:id="filterCompetition" layoutX="228.0" layoutY="18.0" text=": Filtrar por nombre del juagdor" />
    </children>
 </AnchorPane>

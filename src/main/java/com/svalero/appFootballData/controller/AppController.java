@@ -51,7 +51,6 @@ public class AppController implements Initializable {
         maxTabsChoiceBox.setValue(5);
 
         // creamos un mapa de competiciones con clave (código) y valor (nombre)
-        competitions.put("WC", "FIFA World Cup");
         competitions.put("CL", "UEFA Champions League");
         competitions.put("BL1", "Bundesliga");
         competitions.put("DED", "Eredivisie");
@@ -59,7 +58,6 @@ public class AppController implements Initializable {
         competitions.put("FL1", "Ligue 1");
         competitions.put("ELC", "Championship");
         competitions.put("PPL", "Primeira Liga");
-        competitions.put("EC", "European Championship");
         competitions.put("SA", "Serie A");
         competitions.put("PL", "Premier League");
         competitions.put("CLI", "Copa Libertadores");

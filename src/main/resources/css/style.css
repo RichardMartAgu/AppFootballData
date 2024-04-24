@@ -31,7 +31,6 @@
     -fx-font-size: 50px;
     -fx-text-fill: #3498db;
     -fx-font-weight: bold;
-    -fx-effect: drop shadow(three-pass-box, #2c3e50, 10, 0, 0, 0);
 }
 
 .label {

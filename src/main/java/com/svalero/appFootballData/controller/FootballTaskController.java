@@ -9,15 +9,18 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.ListView;
-import javafx.scene.control.ProgressIndicator;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
+import javafx.scene.control.*;
 
 import java.net.URL;
 import java.util.ResourceBundle;
 
 public class FootballTaskController implements Initializable {
+    @FXML
+    private TextField filterTextField;
+    @FXML
+    private Label filterTeam;
+    @FXML
+    private Label filterCompetition;
     @FXML
     private TableView<Squad> squadTableView;
     @FXML
@@ -42,9 +45,11 @@ public class FootballTaskController implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
 
-        //inicializamos la visualización de la tableView y la listView
+        //inicializamos la visualización de la tableView, la listView y los label del filtrado.
         teamListView.setVisible(true);
         squadTableView.setVisible(true);
+        filterCompetition.setVisible(true);
+        filterTeam.setVisible(true);
 
         //hacemos instancia de la lista
         this.squads = FXCollections.observableArrayList();
@@ -61,7 +66,32 @@ public class FootballTaskController implements Initializable {
         // inicializar la lista de nombres
         this.names = FXCollections.observableArrayList();
         this.teamListView.setItems(this.names);
+
+        // Configurar un listener para el campo de texto
+        filterTextField.textProperty().addListener((observable, oldValue, newValue) -> {
+            // Obtener el valor del campo de texto y aplicar el filtro
+            String filterText = newValue.trim();
+            if (filterText.isEmpty()) {
+                if (selectedCompetition != null) {
+                    // Cuando hay una competición seleccionada, muestra los nombres de los equipos
+                    teamListView.setItems(names);
+                } else if (selectedTeam != null) {
+                    // Cuando hay un equipo seleccionado, muestra los jugadores
+                    squadTableView.setItems(squads);
+                }
+            } else {
+                // Si se ha introducido un filtro, aplicarlo a la lista correspondiente
+                if (selectedCompetition != null) {
+                    // Cuando hay una competición seleccionada, filtrar los nombres de los equipos
+                    filterTeamList(filterText);
+                } else if (selectedTeam != null) {
+                    // Cuando hay un equipo seleccionado, filtrar los jugadores
+                    filterPlayerList(filterText);
+                }
+            }
+        });
     }
+
 
     //recuperamos la competición seleccionada y a la vez creamos la tarea
     public void createCompetitionTask(String selectedCode) {
@@ -80,8 +110,10 @@ public class FootballTaskController implements Initializable {
     //crea la tarea para recibir los equipos de una competición
     private void createFootballCompetitionTask() {
 
-        //Ocultamos el tableView de lso jugadores
+        //Ocultamos el tableView de lso jugadores y el label del buscador de competiciones
         squadTableView.setVisible(false);
+        filterTeam.setVisible(false);
+
 
         // Verificar si competitionCode no es nulo antes de imprimirlo
         if (selectedCompetition != null) {
@@ -99,8 +131,9 @@ public class FootballTaskController implements Initializable {
     //crea la tarea para recibir los jugadores de un equipo
     private void createFootballTeamTask() {
 
-        //Ocultamos el listView de los equipos
+        //Ocultamos el listView de los equipos y el label del buscador de equipos
         teamListView.setVisible(false);
+        filterCompetition.setVisible(false);
 
         // Verificar si competitionCode no es nulo antes de imprimirlo
         if (selectedTeam != null) {
@@ -113,5 +146,34 @@ public class FootballTaskController implements Initializable {
             // Manejar el caso en que el equipo sea nulo
             ShowAlert.showErrorAlert("Error", "error al crear: ", "No se puede crear la tarea FootballTask: competitionCode es nulo");
         }
+    }
+    // Método para filtrar la lista de equipos
+    private void filterTeamList(String filterText) {
+        // Crear una lista observable para almacenar los equipos filtrados
+        ObservableList<String> filteredTeams = FXCollections.observableArrayList();
+        // Iterar sobre la lista de nombres de equipos para verificarlos (ignorar mayúsculas y minúsculas)
+        for (String team : names) {
+            if (team.toLowerCase().contains(filterText.toLowerCase())) {
+                // Si el equipo coincide con el filtro, añadirlo a la lista de equipos filtrados
+                filteredTeams.add(team);
+            }
+        }
+        // Establecer la lista de equipos filtrados en el ListView
+        teamListView.setItems(filteredTeams);
+    }
+
+    // Método para filtrar la lista de jugadores
+    private void filterPlayerList(String filterText) {
+        // Crear una lista observable para almacenar los jugadores filtrados
+        ObservableList<Squad> filteredPlayers = FXCollections.observableArrayList();
+        // Iterar sobre la lista de nombres de jugadores para verificarlos (ignorar mayúsculas y minúsculas)
+        for (Squad player : squads) {
+            if (player.getName().toLowerCase().contains(filterText.toLowerCase())) {
+                // Si el jugador coincide con el filtro, añadirlo a la lista de jugadores filtrados
+                filteredPlayers.add(player);
+            }
+        }
+        // Establecer la lista de jugadores filtrados en el TableView
+        squadTableView.setItems(filteredPlayers);
     }
 }
