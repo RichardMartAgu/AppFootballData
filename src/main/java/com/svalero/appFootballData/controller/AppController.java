@@ -24,7 +24,6 @@ public class AppController implements Initializable {
     private ComboBox<String> teamComboBox;
     @FXML
     private Button searchCompetitionButton;
-
     @FXML
     private Button searchTeamButton;
     @FXML
@@ -40,10 +39,6 @@ public class AppController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-
-        searchCompetitionButton.getStyleClass().add("btn");
-        searchCompetitionButton.getStyleClass().add("btn-primary");
-
 
         // inicializamos el maxTabsChoiceBox para elegir un máximo de tabs
         ObservableList<Integer> choices = FXCollections.observableArrayList(1, 2, 3, 4, 5);
@@ -167,9 +162,10 @@ public class AppController implements Initializable {
             System.out.println("AppController teamId : " + selectedTeamId);
 
             // Enviamos el código del equipo al controlador
-            footballTaskController.createFootballTeamTask(selectedTeamId);
+            footballTaskController.createFootballSquadTask(selectedTeamId);
 
         } else {
+            //alerta informativa sobre el máximo de pestañas alcanzado
             ShowAlert.showInformationAlert("Information", "Máximo de pestañas alcanzado", "por favor cerrar alguna pestaña antes de continuar");
         }
     }

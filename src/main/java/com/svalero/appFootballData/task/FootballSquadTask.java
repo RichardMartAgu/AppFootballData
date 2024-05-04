@@ -2,7 +2,6 @@ package com.svalero.appFootballData.task;
 
 import com.svalero.appFootballData.model.Squad;
 import com.svalero.appFootballData.service.FootballService;
-import com.svalero.appFootballData.utils.ShowAlert;
 import io.reactivex.functions.Consumer;
 import javafx.application.Platform;
 import javafx.collections.ObservableList;
