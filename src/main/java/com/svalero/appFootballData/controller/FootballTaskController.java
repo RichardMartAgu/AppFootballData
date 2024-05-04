@@ -217,9 +217,14 @@ public class FootballTaskController implements Initializable {
     }
 
     public void exportTeamToCSV() {
+        // Establecer la ruta predeterminada del diálogo de guardado como la carpeta deseada
+        File initialDirectory = new File("src/main/resources/target");
         // Crear un objeto FileChooser para permitir al usuario elegir la ubicación del archivo CSV
         FileChooser fileChooser = new FileChooser();
+        // Establecer el título del diálogo
         fileChooser.setTitle("Guardar como CSV");
+        // Establecer la carpeta inicial
+        fileChooser.setInitialDirectory(initialDirectory);
 
         // Establecer el nombre de archivo predeterminado
         fileChooser.setInitialFileName("team.csv");
@@ -256,9 +261,14 @@ public class FootballTaskController implements Initializable {
     }
 
     public void exportPlayerToCSV() {
+        // Establecer la ruta predeterminada del diálogo de guardado como la carpeta deseada
+        File initialDirectory = new File("src/main/resources/target");
         // Crear un objeto FileChooser para permitir al usuario elegir la ubicación del archivo CSV
         FileChooser fileChooser = new FileChooser();
+        // Establecer el título del diálogo
         fileChooser.setTitle("Guardar como CSV");
+        // Establecer la carpeta inicial
+        fileChooser.setInitialDirectory(initialDirectory);
 
         // Establecer el nombre de archivo predeterminado
         fileChooser.setInitialFileName("squad.csv");
