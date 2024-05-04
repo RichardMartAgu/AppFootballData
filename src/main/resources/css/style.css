@@ -11,6 +11,7 @@
 .TableView {
     -fx-background-color: LightCyan;
     -fx-border-color: SteelBlue;
+     -fx-alignment: center;
 }
 
 .button {
@@ -31,6 +32,7 @@
     -fx-font-size: 50px;
     -fx-text-fill: #3498db;
     -fx-font-weight: bold;
+    -fx-alignment: center;
 }
 
 .label {
@@ -41,6 +43,7 @@
 .table-view .column-header {
     -fx-background-color: PowderBlue;
     -fx-text-fill: white;
+    -fx-alignment: center;
 }
 
 .tab {
@@ -49,4 +52,7 @@
 
 .tab-label {
     -fx-text-fill: #333;
+}
+.columna-centrada .table-cell {
+    -fx-alignment: center;
 }

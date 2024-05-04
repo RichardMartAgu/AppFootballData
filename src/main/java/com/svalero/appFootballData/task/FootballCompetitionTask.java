@@ -11,12 +11,12 @@ import javafx.scene.control.ProgressIndicator;
 public class FootballCompetitionTask extends Task<Integer> {
 
     private final String selectedCompetition;
-    private final ObservableList<String> names;
+    private final ObservableList<Team> teams;
     private final ProgressIndicator progressIndicator;
 
-    public FootballCompetitionTask(String selectedCompetition, ObservableList<String> names, ProgressIndicator progressIndicator) {
+    public FootballCompetitionTask(String selectedCompetition, ObservableList<Team> teams, ProgressIndicator progressIndicator) {
         this.selectedCompetition = selectedCompetition;
-        this.names = names;
+        this.teams = teams;
         this.progressIndicator = progressIndicator;
     }
 
@@ -36,7 +36,7 @@ public class FootballCompetitionTask extends Task<Integer> {
             // Retardar la ejecución para simular una operación de red
             Thread.sleep(250);
             // Agregar el nombre del equipo a la lista
-            Platform.runLater(() -> this.names.add(team.getName()));
+            Platform.runLater(() -> this.teams.add(team));
         };
 
         // Suscribir el Consumer al servicio para recibir los equipos

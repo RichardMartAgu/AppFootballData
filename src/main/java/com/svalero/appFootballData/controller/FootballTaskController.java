@@ -1,6 +1,7 @@
 package com.svalero.appFootballData.controller;
 
 import com.svalero.appFootballData.model.Squad;
+import com.svalero.appFootballData.model.Team;
 import com.svalero.appFootballData.task.FootballCompetitionTask;
 import com.svalero.appFootballData.task.FootballSquadTask;
 import com.svalero.appFootballData.utils.ShowAlert;
@@ -9,7 +10,10 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.geometry.Pos;
 import javafx.scene.control.*;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -22,6 +26,14 @@ public class FootballTaskController implements Initializable {
     @FXML
     private Label filterCompetition;
     @FXML
+    private TableView<Team> teamTableView;
+    @FXML
+    private TableColumn<Team, String> teamColumn;
+    @FXML
+    private TableColumn<Team, String> tlaColumn;
+    @FXML
+    private TableColumn<Team, ImageView> crestColumn;
+    @FXML
     private TableView<Squad> squadTableView;
     @FXML
     private TableColumn<Squad, String> nameColumn;
@@ -32,10 +44,8 @@ public class FootballTaskController implements Initializable {
     @FXML
     private TableColumn<Squad, String> birthColumn;
     @FXML
-    private ListView<String> teamListView;
-    @FXML
     private ProgressIndicator progressIndicator;
-    private ObservableList<String> names;
+    private ObservableList<Team> teams;
     private ObservableList<Squad> squads;
     private FootballCompetitionTask footballCompetitionTask;
     private FootballSquadTask footballSquadTask;
@@ -46,12 +56,12 @@ public class FootballTaskController implements Initializable {
     public void initialize(URL location, ResourceBundle resources) {
 
         //inicializamos la visualización de la tableView, la listView y los label del filtrado.
-        teamListView.setVisible(true);
+        teamTableView.setVisible(true);
         squadTableView.setVisible(true);
         filterCompetition.setVisible(true);
         filterTeam.setVisible(true);
 
-        //hacemos instancia de la lista
+        //inicializamos lista de la plantilla
         this.squads = FXCollections.observableArrayList();
 
         //añadimos la lista al tableView
@@ -63,9 +73,26 @@ public class FootballTaskController implements Initializable {
         nationalityColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getNationality()));
         birthColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getDateOfBirth()));
 
-        // inicializar la lista de nombres
-        this.names = FXCollections.observableArrayList();
-        this.teamListView.setItems(this.names);
+        // inicializamos la lista de equipos en la competición
+        this.teams = FXCollections.observableArrayList();
+
+        //añadimos la lista al tableView
+        teamTableView.setItems(teams);
+
+        //añadir valores a las columnas del tableView
+        teamColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getName()));
+        tlaColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getTla()));
+        //añadimos la imagen a la columna del blasón
+        crestColumn.setCellValueFactory(param -> {
+            ImageView imageView = new ImageView();
+            imageView.setFitHeight(50); // Establecer el alto de la imagen
+            imageView.setFitWidth(50); // Establecer el ancho de la imagen
+            Team team = param.getValue();
+            Image image = new Image(team.getCrest(), true);
+            imageView.setImage(image);
+            return new javafx.beans.property.SimpleObjectProperty<>(imageView);
+        });
+
 
         // Configurar un listener para el campo de texto
         filterTextField.textProperty().addListener((observable, oldValue, newValue) -> {
@@ -74,7 +101,7 @@ public class FootballTaskController implements Initializable {
             if (filterText.isEmpty()) {
                 if (selectedCompetition != null) {
                     // Cuando hay una competición seleccionada, muestra los nombres de los equipos
-                    teamListView.setItems(names);
+                    teamTableView.setItems(teams);
                 } else if (selectedTeam != null) {
                     // Cuando hay un equipo seleccionado, muestra los jugadores
                     squadTableView.setItems(squads);
@@ -118,7 +145,7 @@ public class FootballTaskController implements Initializable {
         // Verificar si competitionCode no es nulo antes de imprimirlo
         if (selectedCompetition != null) {
             // creamos la instancia de FootballTask con el código de competición, la lista de nombres y la barra de progreso
-            footballCompetitionTask = new FootballCompetitionTask(selectedCompetition, names, progressIndicator);
+            footballCompetitionTask = new FootballCompetitionTask(selectedCompetition, teams, progressIndicator);
 
             // Iniciar la tarea en un hilo separado
             new Thread(footballCompetitionTask).start();
@@ -132,7 +159,7 @@ public class FootballTaskController implements Initializable {
     private void createFootballTeamTask() {
 
         //Ocultamos el listView de los equipos y el label del buscador de equipos
-        teamListView.setVisible(false);
+        teamTableView.setVisible(false);
         filterCompetition.setVisible(false);
 
         // Verificar si competitionCode no es nulo antes de imprimirlo
@@ -147,19 +174,20 @@ public class FootballTaskController implements Initializable {
             ShowAlert.showErrorAlert("Error", "error al crear: ", "No se puede crear la tarea FootballTask: competitionCode es nulo");
         }
     }
+
     // Método para filtrar la lista de equipos
     private void filterTeamList(String filterText) {
         // Crear una lista observable para almacenar los equipos filtrados
-        ObservableList<String> filteredTeams = FXCollections.observableArrayList();
+        ObservableList<Team> filteredTeams = FXCollections.observableArrayList();
         // Iterar sobre la lista de nombres de equipos para verificarlos (ignorar mayúsculas y minúsculas)
-        for (String team : names) {
-            if (team.toLowerCase().contains(filterText.toLowerCase())) {
+        for (Team team : teams) {
+            if (team.getName().toLowerCase().contains(filterText.toLowerCase())) {
                 // Si el equipo coincide con el filtro, añadirlo a la lista de equipos filtrados
                 filteredTeams.add(team);
             }
         }
         // Establecer la lista de equipos filtrados en el ListView
-        teamListView.setItems(filteredTeams);
+        teamTableView.setItems(filteredTeams);
     }
 
     // Método para filtrar la lista de jugadores
