@@ -1,0 +1,58 @@
+.root {
+    -fx-font-family: 'Arial', sans-serif;
+}
+
+.Anchor {
+    -fx-background-color: LightCyan;
+    -fx-border-color: SteelBlue;
+    -fx-border-width: 5px;
+}
+
+.TableView {
+    -fx-background-color: LightCyan;
+    -fx-border-color: SteelBlue;
+     -fx-alignment: center;
+}
+
+.button {
+    -fx-background-color: PowderBlue;
+    -fx-background-radius: 15;
+    -fx-font-size: 14px;
+    -fx-text-fill: #333;
+    -fx-padding: 8px 16px;
+    -fx-cursor: hand;
+}
+
+.button:hover {
+    -fx-background-color: DarkTurquoise;
+}
+
+.labelEstilizado {
+    -fx-font-family: 'Segue UI', Thoma, Geneva, Verdana, sans-serif;
+    -fx-font-size: 50px;
+    -fx-text-fill: #3498db;
+    -fx-font-weight: bold;
+    -fx-alignment: center;
+}
+
+.label {
+    -fx-font-size: 16px;
+    -fx-text-fill: #555;
+}
+
+.table-view .column-header {
+    -fx-background-color: PowderBlue;
+    -fx-text-fill: white;
+    -fx-alignment: center;
+}
+
+.tab {
+    -fx-background-color: LightCyan;
+}
+
+.tab-label {
+    -fx-text-fill: #333;
+}
+.columna-centrada .table-cell {
+    -fx-alignment: center;
+}
